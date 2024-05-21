@@ -12,7 +12,12 @@ export class ReduxService {
   private static instance: ReduxService;
   private statesAndActions: Record<
     string,
-    { subscribeCallBacks: any[]; actions: any; slice: Slice | null }
+    {
+      subscribeCallBacks: any[];
+      actions: any;
+      selectors: any;
+      slice: Slice | null;
+    }
   > = {};
   private allSlices: Slice[] = [];
 
@@ -31,6 +36,7 @@ export class ReduxService {
         this.statesAndActions[option.name] = {
           subscribeCallBacks: [],
           actions: slice.actions,
+          selectors: slice.selectors,
           slice: slice,
         };
       });
@@ -67,12 +73,12 @@ export class ReduxService {
     subscribeCallBack: (state: any) => void
   ): void {
     if (this.statesAndActions[sliceName]) {
-      subscribeCallBack(this.store && this.store.getState()[sliceName].counter);
+      subscribeCallBack(this.store && this.store.getState()[sliceName]);
       this.statesAndActions[sliceName].subscribeCallBacks.push(
         subscribeCallBack
       );
       this.statesAndActions[sliceName].subscribeCallBacks.forEach((cb) =>
-        cb(this.store && this.store.getState()[sliceName].counter)
+        cb(this.store && this.store.getState()[sliceName])
       );
     }
   }
@@ -83,5 +89,9 @@ export class ReduxService {
 
   public getAction(sliceName: string, actionName: string) {
     return this.statesAndActions[sliceName].actions[actionName];
+  }
+
+  public getSelectors(sliceName: string, selectorName: string) {
+    return this.statesAndActions[sliceName].selectors[selectorName];
   }
 }

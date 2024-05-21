@@ -1,0 +1,3 @@
+<p>comp-b works!</p>
+<pre *ngIf="users.asObservable() | async as userRef">{{userRef|json}}</pre>
+<button (click)="deleteAll()" class="btn btn-danger">Delete</button>

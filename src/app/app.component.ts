@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ReduxService } from './store/redux-service';
-import { counterSlice, counterSliceOption } from './store/store';
+import { counterSliceOption, usersSliceOption } from './store/store';
 
 @Component({
   selector: 'app-root',
@@ -12,18 +12,20 @@ export class AppComponent {
   service = ReduxService.getInstance();
   counterAction: Subject<number> = new Subject();
   counter$ = this.counterAction.asObservable();
+
   ngOnInit() {
-    this.service.configSlicesOptions([counterSliceOption]);
+    this.service.configSlicesOptions([counterSliceOption, usersSliceOption]);
+    console.log(this.service.getSelectors('counter', 'selectCount'));
     this.service.subscribe('counter', (state: { counter: number }) => {
       this.counterAction.next(state.counter);
     });
   }
 
   increment() {
-    this.service.dispatch(this.service.getAction('counter','incremented')());
+    this.service.dispatch(this.service.getAction('counter', 'incremented')());
   }
 
   decrement() {
-    this.service.dispatch(this.service.getAction('counter','decremented')());
+    this.service.dispatch(this.service.getAction('counter', 'decremented')());
   }
 }

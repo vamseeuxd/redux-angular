@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CompBComponent } from './comp-b/comp-b.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, CompBComponent],
   imports: [BrowserModule, CommonModule, FormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
